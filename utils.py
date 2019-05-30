@@ -21,6 +21,18 @@ def _process_input(source_img, scale_factor=1.0, output_stride=16):
     input_img = input_img.reshape(1, target_height, target_width, 3)
     return input_img, source_img, scale
 
+def open_image(image, scale_factor=1.0, output_stride=16):
+    return _process_input(image, scale_factor, output_stride)
+
+def open_batch(batch, scale_factor=1.0, output_stride=16):
+    output_imgs, source_imgs, scales = [], [], []
+    for img in batch:
+        input_image, draw_image, output_scale = _process_input(img, scale_factor, output_stride)
+        output_imgs.append(input_image)
+        source_imgs.append(draw_image)
+        scales.append(output_scale)
+    
+    return output_imgs, source_imgs, scales
 
 def read_cap(cap, scale_factor=1.0, output_stride=16):
     res, img = cap.read()
